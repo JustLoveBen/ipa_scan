@@ -27,7 +27,8 @@ for filepath in `find $inputDir`; do
     if [[ `file --mime-type $filepath` == *application/x-mach-binary* ]]; then
       echo "▶️  >>>>>>> scanning - "$filepath
       resFile=`echo $filepath | awk -F "/" '{print $NF}'`
-
+      
+      file --mime-type $filepath >> ${outputDir}${resFile%.*}
       nm -a $filepath >> ${outputDir}${resFile%.*}
       otool -v -s __TEXT __cstring $filepath > ${outputDir}${resFile%.*}${TEXTSegmentCString}
       echo "✅ scan finished - "$filepath
